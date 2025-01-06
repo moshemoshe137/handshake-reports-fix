@@ -1,6 +1,7 @@
 """Read emails from Outlook."""
 
 import os
+from pathlib import Path
 
 import win32com.client
 from dotenv import load_dotenv
@@ -42,6 +43,16 @@ def load_emails() -> None:
         print(f"{i}. Subject: {message.Subject}, Received: {message.ReceivedTime}")
 
         # 2. Download attachments.
+        if message.Attachments.Count == 0:
+            # We expect *ALL* emails to have an attachment!
+            msg = f"Email {message.Subject} ({i:,}) has no attachments!"
+            raise ValueError(msg)
+
+        for attachment in message.Attachments:
+            file_name = Path(attachment.FileName).resolve()
+            attachment.SaveAsFile(file_name)
+            print(f'Saved attachment {attachment.FileName} to "{file_name}"')
+
         # 3. Mark the email as read.
         # 4. Find emails older than $n$ days. Ensure their attachments have been
         #    downloaded, then delete the email.
