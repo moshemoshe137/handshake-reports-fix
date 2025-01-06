@@ -33,11 +33,18 @@ def load_emails() -> None:
     messages = handshake_reports_folder.Items
     messages.Sort("[ReceivedTime]", True)  # Sort by received time (newest first)
 
-    print("Latest emails in handshake-reports:")
-    for i, message in enumerate(messages, start=1):
+    # Process the emails
+    for i, message in enumerate(messages):
+        # 1. Find messages in the right folder with the right subject.
+        if "BILAKE" not in message.Subject or "error" in message.Subject.casefold():
+            # Wrong subject. Skip this email
+            continue
         print(f"{i}. Subject: {message.Subject}, Received: {message.ReceivedTime}")
-        if i >= 20:  # Stop after the first 20 emails  # noqa: PLR2004
-            break
+
+        # 2. Download attachments.
+        # 3. Mark the email as read.
+        # 4. Find emails older than $n$ days. Ensure their attachments have been
+        #    downloaded, then delete the email.
 
 
 if __name__ == "__main__":
