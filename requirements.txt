@@ -4,5 +4,7 @@
 #
 #    pip-compile
 #
+python-dotenv==1.0.1
+    # via -r requirements.in
 pywin32==308
     # via -r requirements.in
