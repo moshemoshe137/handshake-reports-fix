@@ -1,10 +1,13 @@
 """Read emails from Outlook."""
 
+import datetime
 import os
 from pathlib import Path
 
 import win32com.client
 from dotenv import load_dotenv
+
+N_DAYS_KEPT = 100  # Number of days to keep emails before deleting them.
 
 
 def parse_env_vars() -> None:
@@ -74,6 +77,10 @@ def load_emails() -> None:
 
         # 4. Find emails older than $n$ days. Ensure their attachments have been
         #    downloaded, then delete the email.
+        today = datetime.datetime.now(datetime.UTC)
+        if today - message.ReceivedTime > datetime.timedelta(days=N_DAYS_KEPT):
+            message.Delete()
+            print(f"Deleted email {message.Subject} ({i:,})")
 
 
 if __name__ == "__main__":
