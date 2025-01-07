@@ -46,10 +46,15 @@ def load_emails() -> None:
 
     # Process the emails
     for i, message in enumerate(messages):
-        # 1. Find messages in the right folder with the right subject.
-        if "BILAKE" not in message.Subject or "error" in message.Subject.casefold():
-            # Wrong subject. Skip this email
+        # 1. Find unread messages with the right subject.
+        if (
+            "BILAKE" not in message.Subject  # If the subject doesn't contain "BILAKE"
+            or "error" in message.Subject.casefold()  # or if contains "error"
+            or not message.UnRead  # or if it's already read
+        ):
+            # Skip this email! It's got the wrong subject or is already read.
             continue
+
         print(f"{i}. Subject: {message.Subject}, Received: {message.ReceivedTime}")
 
         # 2. Download attachments.
