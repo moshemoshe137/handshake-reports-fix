@@ -64,6 +64,9 @@ def load_emails() -> None:
             print(f'Saved attachment {attachment.FileName} to "{file_name}"')
 
         # 3. Mark the email as read.
+        message.UnRead = False
+        message.Save()
+
         # 4. Find emails older than $n$ days. Ensure their attachments have been
         #    downloaded, then delete the email.
 
