@@ -26,8 +26,18 @@ def load_emails() -> None:
     # Connect to Outlook
     outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
 
+    # Determine the Current User's email address
+    users_email = (
+        # Resolve the exchange email address
+        outlook.CurrentUser.AddressEntry.GetExchangeUser().PrimarySmtpAddress
+        # if they are an Exchange user.
+        if outlook.CurrentUser.AddressEntry.GetExchangeUser()
+        # Otherwise, use the email address from the `CurrentUser` object.
+        else outlook.CurrentUser.Address
+    )
+
     # Access the "Handshake-Reports" folder
-    root_folder = outlook.Folders[2]
+    root_folder = outlook.Folders[users_email]
     handshake_reports_folder = root_folder.Folders["Handshake-Reports"]
 
     # Get the items (emails) in the folder
