@@ -4,7 +4,11 @@
 #
 #    pip-compile
 #
+colorama==0.4.6
+    # via tqdm
 python-dotenv==1.0.1
     # via -r requirements.in
 pywin32==308
+    # via -r requirements.in
+tqdm==4.67.1
     # via -r requirements.in

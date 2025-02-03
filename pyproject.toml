@@ -39,7 +39,7 @@ extend-select = ["ALL"]
 ignore = [
     "COM812", # Conflicts with `ruff format` and raises a warning.
     "ERA",    # Allow commented-out code.
-    "FBT003", # Allow Boolean positional value in function call.
+    "FBT",    # Allow Boolean arguments.
     "INP",    # Avoid error: "File _____ is part of an implicit namespace package. Add
               # an `__init__.py`."
     "ISC001", # Conflicts with `ruff format` and raises a warning.
